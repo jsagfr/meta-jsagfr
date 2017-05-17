@@ -1,0 +1,56 @@
+From 4fd0bb357a90786e19e20db8f1b9b3f5336d140b Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=A9r=C3=B4me=20Gu=C3=A9ry?= <jerome.guery@gmail.com>
+Date: Mon, 6 Feb 2017 09:15:02 +0100
+Subject: [PATCH] Add beaglebone green wireless support
+
+---
+ board/ti/am335x/board.c      | 2 ++
+ board/ti/am335x/board.h      | 5 +++++
+ include/configs/am335x_evm.h | 2 ++
+ 3 files changed, 9 insertions(+)
+
+diff --git a/board/ti/am335x/board.c b/board/ti/am335x/board.c
+index 8eaf3e9..7aa9797 100644
+--- a/board/ti/am335x/board.c
++++ b/board/ti/am335x/board.c
+@@ -653,6 +653,8 @@ int board_late_init(void)
+ 
+ 	if (board_is_bbg1())
+ 		name = "BBG1";
++        if (board_is_bbgw())
++		name = "BBGW";
+ 	set_board_info_env(name);
+ 
+ 	/*
+diff --git a/board/ti/am335x/board.h b/board/ti/am335x/board.h
+index 48c139a..7d775a5 100644
+--- a/board/ti/am335x/board.h
++++ b/board/ti/am335x/board.h
+@@ -39,6 +39,11 @@ static inline int board_is_bbg1(void)
+ 	return board_is_bone_lt() && !strncmp(board_ti_get_rev(), "BBG1", 4);
+ }
+ 
++static inline int board_is_bbgw(void)
++{
++	return board_is_bone_lt() && !strncmp(board_ti_get_rev(), "GW1A", 4);
++}
++
+ static inline int board_is_evm_sk(void)
+ {
+ 	return board_ti_is("A335X_SK");
+diff --git a/include/configs/am335x_evm.h b/include/configs/am335x_evm.h
+index 49c14df..548adbd 100644
+--- a/include/configs/am335x_evm.h
++++ b/include/configs/am335x_evm.h
+@@ -146,6 +146,8 @@
+ 			"setenv fdtfile am335x-boneblack.dtb; fi; " \
+ 		"if test $board_name = BBG1; then " \
+ 			"setenv fdtfile am335x-bonegreen.dtb; fi; " \
++		"if test $board_name = BBGW; then " \
++			"setenv fdtfile am335x-bonegreen-wireless.dtb; fi; " \
+ 		"if test $board_name = A33515BB; then " \
+ 			"setenv fdtfile am335x-evm.dtb; fi; " \
+ 		"if test $board_name = A335X_SK; then " \
+-- 
+2.9.3
+
